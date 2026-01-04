@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Echo Health | Elite Patient Portal</title> 
+    <!-- Professional Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Icon Suite -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
@@ -28,12 +30,15 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: var(--bg-color); 
             color: var(--text-main); 
             transition: var(--transition);
             overflow-x: hidden;
+            line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
         /* --- NAVIGATION --- */
@@ -46,35 +51,30 @@
         [data-theme="dark"] .nav-bar { background: rgba(15, 23, 42, 0.8); border-bottom: 1px solid rgba(255,255,255,0.05); }
 
         .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .logo { height: 40px; width: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+        .logo { height: 42px; width: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); box-shadow: 0 0 10px rgba(13, 148, 136, 0.2); }
         .brand-name { font-size: 1.4rem; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
 
-        .nav-links { display: flex; align-items: center; gap: 25px; }
+        .nav-links { display: flex; align-items: center; gap: 20px; }
         .nav-links a { 
             text-decoration: none; color: var(--text-main); 
             font-weight: 600; font-size: 0.95rem; transition: var(--transition);
         }
         .nav-links a:hover { color: var(--accent); }
 
-        /* Added Profile Style */
         .user-profile-badge {
+            display: flex; align-items: center; gap: 8px;
             background: rgba(13, 148, 136, 0.1);
-            padding: 5px 12px;
-            border-radius: 20px;
-            color: var(--accent);
-            font-weight: 800;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 6px 14px; border-radius: 50px;
+            color: var(--accent); font-weight: 700; font-size: 0.9rem;
         }
 
         .theme-btn {
             background: none; border: none; color: var(--text-main); 
             cursor: pointer; font-size: 1.2rem; transition: var(--transition);
+            display: flex; align-items: center; justify-content: center;
         }
 
-        /* --- HERO --- */
+        /* --- HERO SECTION --- */
         .hero { 
             padding: 100px 8% 60px; text-align: center;
             background: radial-gradient(circle at top right, rgba(13, 148, 136, 0.1), transparent);
@@ -83,43 +83,34 @@
             font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); 
             line-height: 1.1; margin-bottom: 20px; 
         }
-        .hero h1 span { color: var(--accent); position: relative; }
-        .hero h1 span::after {
-            content: ''; position: absolute; bottom: 5px; left: 0; 
-            width: 100%; height: 8px; background: rgba(13, 148, 136, 0.2); z-index: -1;
-        }
+        .hero h1 span { color: var(--accent); }
         .hero p { 
             font-size: 1.2rem; color: var(--text-muted); 
             max-width: 650px; margin: 0 auto 40px; font-weight: 500;
         }
 
-        .btn {
-            padding: 18px 40px; border-radius: 50px; font-weight: 700;
-            cursor: pointer; transition: var(--transition); border: none; font-size: 1rem;
-        }
         .btn-primary { 
-            background: var(--accent); color: white; 
+            background: var(--accent); color: white; border: none;
+            padding: 18px 40px; border-radius: 50px; font-weight: 700;
+            cursor: pointer; transition: var(--transition); font-size: 1rem;
             box-shadow: 0 10px 20px rgba(13, 148, 136, 0.3);
         }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(13, 148, 136, 0.4); }
 
         /* --- FEATURE GRID --- */
-        .section { padding: 60px 8% 100px; }
+        .section { padding: 40px 8% 80px; }
         .grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px; margin-top: 40px;
         }
 
         .card {
-            background: var(--card-bg); padding: 45px 35px; border-radius: 30px;
+            background: var(--card-bg); padding: 40px 30px; border-radius: 30px;
             box-shadow: var(--shadow); text-decoration: none; color: inherit;
             border: 1px solid rgba(0,0,0,0.03); transition: var(--transition);
             display: flex; flex-direction: column; align-items: flex-start;
         }
-        .card:hover { 
-            transform: translateY(-12px); border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
+        .card:hover { transform: translateY(-12px); border-color: var(--accent); }
         .card-icon { 
             width: 60px; height: 60px; background: rgba(13, 148, 136, 0.1);
             color: var(--accent); border-radius: 18px; display: flex;
@@ -129,69 +120,118 @@
         .card h3 { font-size: 1.5rem; margin-bottom: 12px; font-weight: 700; }
         .card p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
 
-        /* --- POPUP ALERT --- */
+        /* --- INFO SECTIONS --- */
+        .info-section { padding: 80px 8%; max-width: 1000px; margin: 0 auto; }
+        .info-card { background: var(--card-bg); padding: 40px; border-radius: 32px; box-shadow: var(--shadow); margin-bottom: 30px; }
+        .info-card h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 20px; color: var(--accent); }
+        .help-item { padding: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .help-item:last-child { border-bottom: none; }
+        .help-item strong { display: block; margin-bottom: 8px; color: var(--text-main); font-size: 1.1rem; }
+
+        /* --- NOTIFICATION BANNER --- */
         #alertBanner {
             position: fixed; top: -150px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 450px; background: #1e293b; color: white;
-            padding: 24px; border-radius: 20px; display: flex;
+            padding: 24px; border-radius: 24px; display: flex;
             align-items: center; justify-content: space-between;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5); z-index: 9999;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5); z-index: 2000;
             transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         #alertBanner.active { top: 30px; }
-        .btn-confirm { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+        .alert-content b { color: var(--accent); display: block; margin-bottom: 4px; font-size: 0.9rem; letter-spacing: 1px; }
+        .btn-confirm { 
+            background: var(--accent); color: white; border: none; 
+            padding: 12px 24px; border-radius: 12px; font-weight: 700; cursor: pointer; 
+        }
 
-        footer { padding: 50px 8%; text-align: center; border-top: 1px solid rgba(0,0,0,0.05); color: var(--text-muted); font-weight: 600; }
+        footer { padding: 40px; text-align: center; color: var(--text-muted); font-weight: 600; border-top: 1px solid rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
 <nav class="nav-bar">
     <a href="index.html" class="logo-container">
-        <img src="assets/logo.jpeg" class="logo" alt="Echo Health">
+        <!-- Logo handles potential broken paths with fallback -->
+        <img src="./logo.jpeg" class="logo" alt="Echo Health" onerror="this.src='https://ui-avatars.com/api/?name=Echo+Health&background=0d9488&color=fff'">
         <span class="brand-name">Echo Health</span>
     </a>
+
     <div class="nav-links">
         <div class="user-profile-badge">
-            <i class="fa-solid fa-user-circle"></i> <span id="display-user-name">Patient</span>
+            <i class="fa-solid fa-user-circle"></i>
+            <span id="display-user-name">Patient</span>
         </div>
+        <a href="#about">About</a>
+        <a href="#help">Help</a>
         <a href="schedule.html">Schedule</a>
-        <a href="prescription.html">Prescription</a>
         <a href="medicine.html">Scan</a>
         <a href="login.html" style="color: var(--accent); font-weight: 800;">Switch User</a>
-        <button class="theme-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+        <button class="theme-btn" onclick="toggleTheme()">
+            <i class="fa-solid fa-moon"></i>
+        </button>
     </div>
 </nav>
 
 <header class="hero">
     <h1>Your Voice of Care <br><span>in Every Dose.</span></h1>
-    <p>Empowering seniors with AI-driven medication safety and voice-guided reminders.</p>
-    <button class="btn btn-primary" onclick="enableDemo()">Start Live Demo <i class="fa-solid fa-bell" style="margin-left:8px"></i></button>
+    <p>Empowering seniors with AI-driven medication safety, multilingual reminders, and proactive health monitoring.</p>
+    <button class="btn-primary" onclick="enableDemo()">
+        Start Live Demo <i class="fa-solid fa-bell" style="margin-left:8px"></i>
+    </button>
 </header>
 
-<section class="section" id="features">
+<section class="section">
     <div class="grid">
         <a href="medicine.html" class="card">
             <div class="card-icon"><i class="fa-solid fa-shield-check"></i></div>
             <h3>Safety Validation</h3>
-            <p>Advanced recognition to ensure medication matches doctor prescriptions.</p>
+            <p>Advanced AI recognition ensures your medication matches your prescription exactly.</p>
         </a>
         <a href="alert.html" class="card">
             <div class="card-icon"><i class="fa-solid fa-microphone-lines"></i></div>
             <h3>Voice Reminders</h3>
-            <p>Personalized audio alerts delivered in Hindi, Telugu, or English.</p>
+            <p>Auditory alerts in Hindi or Telugu to ensure no medicine is ever forgotten.</p>
         </a>
         <a href="map.html" class="card" style="border: 2px solid var(--accent);">
             <div class="card-icon" style="background: var(--accent); color: white;"><i class="fa-solid fa-map-location-dot"></i></div>
             <h3>Nearby Pharmacy</h3>
-            <p>Locate medical stores near Kukatpally and get instant directions.</p>
+            <p>Instantly locate medical stores near Kukatpally and get walking directions.</p>
         </a>
     </div>
 </section>
 
+<!-- ABOUT SECTION -->
+<section id="about" class="info-section">
+    <div class="info-card">
+        <h2>About Echo Health</h2>
+        <p>Echo Health is a specialized patient portal designed for the unique accessibility needs of seniors. By combining Computer Vision for pill identification and Natural Language Processing for native-language alerts, we minimize medication errors and promote independent living.</p>
+    </div>
+</section>
+
+<!-- HELP SECTION -->
+<section id="help" class="info-section">
+    <div class="info-card">
+        <h2>Help Center</h2>
+        <div class="help-item">
+            <strong>How do I scan a pill?</strong>
+            <p>Go to the 'Scan' section and point your camera at the tablet. Ensure there is good lighting for the AI to recognize the medicine.</p>
+        </div>
+        <div class="help-item">
+            <strong>Why are my alerts in Telugu?</strong>
+            <p>The system automatically selects the language based on your profile (Mother uses Telugu, Father uses Hindi). Use 'Switch User' to change this.</p>
+        </div>
+        <div class="help-item">
+            <strong>What if the system is dark?</strong>
+            <p>You can toggle Dark Mode using the moon/sun icon in the navigation bar at any time.</p>
+        </div>
+    </div>
+</section>
+
+<!-- THE PROFESSIONAL ALERT BANNER -->
 <div id="alertBanner">
-    <div>
-        <b style="color:var(--accent); display: block; margin-bottom: 4px;">MEDICATION ALERT</b>
+    <div class="alert-content">
+        <b>MEDICATION ALERT</b>
         <span id="alertMsg">Time for your scheduled dose.</span>
     </div>
     <button class="btn-confirm" onclick="dismissAlert()">CONFIRM</button>
@@ -203,65 +243,64 @@
 
 <script>
     // --- LOAD USER PROFILE ---
-    const activeUser = localStorage.getItem('activeUser') || "Guest";
-    document.getElementById('display-user-name').innerText = activeUser;
+    const activeUser = localStorage.getItem("activeUser") || "Guest";
+    document.getElementById("display-user-name").innerText = activeUser;
 
-    // --- DARK MODE ---
+    // --- DARK MODE LOGIC ---
     function toggleTheme() {
         const body = document.body;
-        const icon = document.querySelector('.theme-btn i');
-        if (body.getAttribute('data-theme') === 'dark') {
-            body.removeAttribute('data-theme');
-            icon.classList.replace('fa-sun', 'fa-moon');
+        const icon = document.querySelector(".theme-btn i");
+        if (body.getAttribute("data-theme") === "dark") {
+            body.removeAttribute("data-theme");
+            icon.classList.replace("fa-sun", "fa-moon");
             localStorage.setItem('theme', 'light');
         } else {
-            body.setAttribute('data-theme', 'dark');
-            icon.classList.replace('fa-moon', 'fa-sun');
+            body.setAttribute("data-theme", "dark");
+            icon.classList.replace("fa-moon", "fa-sun");
             localStorage.setItem('theme', 'dark');
         }
     }
+
     if (localStorage.getItem('theme') === 'dark') {
-        document.body.setAttribute('data-theme', 'dark');
-        document.querySelector('.theme-btn i').classList.replace('fa-moon', 'fa-sun');
+        document.body.setAttribute("data-theme", "dark");
+        document.querySelector(".theme-btn i").classList.replace("fa-moon", "fa-sun");
     }
 
-    // --- AUTOMATED ALERTS (4s DEMO LOOP) ---
+    // --- AUTOMATED DEMO ALERTS ---
     function enableDemo() {
-        Notification.requestPermission();
-        alert("Alerts activated! You will receive a medicine reminder every 4 seconds.");
-        setInterval(() => {
-            if (!document.getElementById('alertBanner').classList.contains('active')) {
-                triggerAlert();
-            }
-        }, 4000); // 4-second cycle
+        if ("Notification" in window) {
+            Notification.requestPermission();
+        }
+        
+        alert("Alerts activated! Reminders will trigger every 4 seconds for this demo.");
+        setInterval(triggerAlert, 4000);
     }
 
     function triggerAlert() {
-        const user = localStorage.getItem('activeUser') || "Patient";
-        const banner = document.getElementById('alertBanner');
-        const msg = document.getElementById('alertMsg');
-        
-        // Native Desktop Notification
-        new Notification("Echo Health", { body: `Reminder for ${user}: Please take your dose.` });
+        if (document.getElementById("alertBanner").classList.contains("active")) return;
 
-        // Multilingual Logic
+        const user = localStorage.getItem("activeUser") || "Patient";
+        const banner = document.getElementById("alertBanner");
+        const msg = document.getElementById("alertMsg");
         const isMother = user.toLowerCase().includes("mother");
-        const alertText = isMother ? `${user} గారు, మీ మందు తీసుకోండి.` : `${user}, अपनी दवा लें।`;
-        
-        msg.innerText = alertText;
-        banner.classList.add('active');
 
-        // Voice Engine
+        if (Notification.permission === "granted") {
+            new Notification("Echo Health", { body: `Hi ${user}, time for your medication.` });
+        }
+
+        const alertText = isMother ? "దయచేసి మీ మందులు వేసుకోండి" : `${user}, अपनी दवा लेने का समय हो गया है।`;
+        msg.innerText = alertText;
+        banner.classList.add("active");
+
         const speech = new SpeechSynthesisUtterance(alertText);
         speech.lang = isMother ? "te-IN" : "hi-IN";
         window.speechSynthesis.speak(speech);
     }
 
     function dismissAlert() {
-        document.getElementById('alertBanner').classList.remove('active');
+        document.getElementById("alertBanner").classList.remove("active");
         window.speechSynthesis.cancel();
     }
 </script>
 
 </body>
-</html>
