@@ -1,0 +1,201 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Health | Automated Care</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Lora:ital,wght@1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2c5282;
+            --secondary: #38ADA9;
+            --bg-color: #F3F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1E272E;
+            --nav-bg: #1E272E;
+            --danger: #e53e3e;
+            --google-blue: #4285F4;
+        }
+
+        [data-theme="dark"] {
+            --primary: #63b3ed;
+            --bg-color: #0F172A;
+            --card-bg: #1E293B;
+            --text-main: #F8FAFC;
+        }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; }
+
+        /* --- NAV & HERO --- */
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 8%; background: var(--nav-bg); }
+        .profile-hero { background: var(--primary); color: white; padding: 40px 8% 80px; text-align: center; }
+        .user-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--secondary); margin-bottom: 10px; }
+
+        .container { max-width: 800px; margin: -60px auto 60px; padding: 0 20px; }
+        .card { background: var(--card-bg); padding: 30px; border-radius: 24px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        
+        /* --- LISTS --- */
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .item-info b { font-size: 1.1rem; color: var(--primary); }
+        
+        /* --- GOOGLE SCHEDULER BUTTON --- */
+        .google-sync-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: #757575;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        .google-sync-btn:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: var(--google-blue); }
+
+        /* --- AUTO-TRIGGER UI --- */
+        .schedule-box { border-left: 8px solid var(--secondary); background: var(--bg-color); padding: 20px; border-radius: 15px; margin-top: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .status-tag { font-size: 0.8rem; padding: 4px 10px; border-radius: 10px; background: var(--primary); color: white; }
+
+        /* --- VOICE OVERLAY --- */
+        .voice-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; color: white; }
+        .pulse-circle { width: 120px; height: 120px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; animation: pulse-ring 1.5s infinite; }
+        @keyframes pulse-ring { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(56, 173, 169, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 30px rgba(56, 173, 169, 0); } 100% { transform: scale(1); } }
+        .btn-confirm { background: var(--secondary); color: white; border: none; padding: 18px 50px; font-size: 1.3rem; border-radius: 50px; cursor: pointer; margin-top: 30px; font-weight: 800; }
+    </style>
+</head>
+<body>
+
+<nav class="nav-bar">
+    <a href="index.html" style="color:white; text-decoration:none; font-weight:800;">Echo Health</a>
+    <div style="color:white;">Logged in: <b>Father</b></div>
+</nav>
+
+<header class="profile-hero">
+    <img src="https://ui-avatars.com/api/?name=Father&background=38ADA9&color=fff" class="user-avatar" alt="User">
+    <h1>Care Dashboard</h1>
+    <p>Connected to your Google Health ecosystem.</p>
+</header>
+
+<div class="container">
+    
+    <center>
+        <a href="https://calendar.google.com" target="_blank" class="google-sync-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Calendar_icon_%282020%29.svg" width="20" alt="GCal">
+            Sync with Google Calendar
+        </a>
+    </center>
+
+    <section class="card">
+        <h2 style="color:var(--primary); margin-top:0;"><i class="fa-solid fa-bell"></i> Live Reminder</h2>
+        <div class="schedule-box">
+            <div>
+                <span class="status-tag">AUTO-TRIGGER ACTIVE</span><br>
+                <b style="font-size:1.3rem;">Morning Dosage: Paracetamol</b><br>
+                <span>Voice alert in: <span id="timer" style="color:var(--danger); font-weight:800;">10</span> seconds</span>
+            </div>
+            <span style="font-size:2rem;">💊</span>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2 style="color:var(--primary);"><i class="fa-solid fa-pills"></i> Medicine Schedule</h2>
+        <div class="item-row">
+            <div class="item-info">
+                <b>Atorvastatin (Lipitor)</b><br>
+                <small>10mg • Once daily • Cholesterol</small>
+            </div>
+            <span style="font-weight:700;">08:00 AM</span>
+        </div>
+        <div class="item-row">
+            <div class="item-info">
+                <b>Metformin</b><br>
+                <small>500mg • Twice daily • Diabetes</small>
+            </div>
+            <span style="font-weight:700;">01:30 PM</span>
+        </div>
+        <div class="item-row">
+            <div class="item-info">
+                <b>Amlodipine</b><br>
+                <small>5mg • Once daily • BP</small>
+            </div>
+            <span style="font-weight:700;">09:00 PM</span>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2 style="color:var(--primary);"><i class="fa-solid fa-calendar-check"></i> Appointments</h2>
+        <div class="item-row">
+            <div class="item-info">
+                <b>Dr. Aris (Cardiology)</b><br>
+                <small>City Care Center • Room 402</small>
+            </div>
+            <div style="text-align:right;">
+                <span style="font-weight:700; display:block;">Jan 15</span>
+                <small>10:30 AM</small>
+            </div>
+        </div>
+        <div class="item-row">
+            <div class="item-info">
+                <b>Physiotherapy Session</b><br>
+                <small>Global Health • Rehab Wing</small>
+            </div>
+            <div style="text-align:right;">
+                <span style="font-weight:700; display:block;">Jan 18</span>
+                <small>04:00 PM</small>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div id="voiceOverlay" class="voice-overlay">
+    <div class="pulse-circle">🎙️</div>
+    <h2 style="margin-top:40px; font-size:2.5rem;">Time for Medicine!</h2>
+    <p id="voiceMsg" style="font-size:1.5rem; font-style:italic; margin:20px 0; color: #ddd;">"Hi Dad, it's time for your Atorvastatin. Please take it now!"</p>
+    <button class="btn-confirm" onclick="confirmMedicine()">I TOOK IT ✅</button>
+</div>
+
+<script>
+    let timeLeft = 10;
+    const timerDisplay = document.getElementById('timer');
+    const overlay = document.getElementById('voiceOverlay');
+
+    const countdown = setInterval(() => {
+        timeLeft--;
+        timerDisplay.innerText = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            triggerVoiceAlarm();
+        }
+    }, 1000);
+
+    function triggerVoiceAlarm() {
+        overlay.style.display = "flex";
+        // Personalized voice message
+        const recordedMessage = "Hi Dad, it's time for your medicine Atorvastatin. Please take it now!";
+        const utterance = new SpeechSynthesisUtterance(recordedMessage);
+        utterance.rate = 0.85; 
+        speechSynthesis.speak(utterance);
+    }
+
+    function confirmMedicine() {
+        overlay.style.display = "none";
+        speechSynthesis.cancel();
+        alert("Schedule Updated. Your caregiver has been notified! ✅");
+    }
+
+    // Theme support
+    if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+</script>
+
+</body>
+</html>

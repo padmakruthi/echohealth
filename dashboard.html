@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Health | Elite Patient Portal</title> 
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #0d9488;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --danger: #e53e3e;
+        }
+
+        [data-theme="dark"] {
+            --primary: #f8fafc;
+            --accent: #2dd4bf;
+            --bg-color: #020617;
+            --card-bg: #0f172a;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-color); color: var(--text-main); transition: 0.3s; overflow-x: hidden; }
+
+        /* --- PROFESSIONAL SIDEBAR NAVIGATION --- */
+        .sidebar {
+            position: fixed; left: 0; top: 0; height: 100vh; width: 260px;
+            background: var(--card-bg); border-right: 1px solid rgba(0,0,0,0.05);
+            padding: 30px; display: flex; flex-direction: column; z-index: 100;
+        }
+        .sidebar-brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.4rem; color: var(--accent); margin-bottom: 50px; text-decoration: none; }
+        .sidebar-brand img { width: 40px; border-radius: 50%; }
+        
+        .nav-item { 
+            text-decoration: none; color: var(--text-muted); padding: 12px 15px; 
+            border-radius: 10px; margin-bottom: 10px; font-weight: 600; 
+            display: flex; align-items: center; gap: 12px; transition: 0.2s;
+        }
+        .nav-item:hover { background: var(--bg-color); color: var(--accent); }
+        .nav-item.active { background: var(--accent); color: white; }
+
+        .main-content { margin-left: 260px; padding: 50px 8%; }
+
+        /* --- PROFESSIONAL DASHBOARD COMPONENTS --- */
+        .header-action { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .theme-btn { 
+            background: var(--card-bg); border: 1px solid rgba(0,0,0,0.1); 
+            padding: 10px 20px; border-radius: 30px; cursor: pointer; font-weight: 700;
+            color: var(--text-main); box-shadow: var(--shadow);
+        }
+
+        .hero-section { margin-bottom: 50px; }
+        .hero-section h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; line-height: 1.1; margin-bottom: 15px; }
+        .status-badge { display: inline-block; padding: 6px 16px; background: rgba(13, 148, 136, 0.1); color: var(--accent); border-radius: 20px; font-weight: 700; font-size: 0.8rem; margin-bottom: 20px; }
+
+        /* Feature Cards */
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .p-card { 
+            background: var(--card-bg); padding: 35px; border-radius: 24px; 
+            box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.02);
+            text-decoration: none; color: inherit; transition: 0.3s;
+            display: flex; flex-direction: column; align-items: flex-start;
+        }
+        .p-card:hover { transform: translateY(-8px); border-color: var(--accent); }
+        .card-icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .card-label { font-size: 0.75rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+
+        /* --- EMERGENCY SOS BUTTON --- */
+        .sos-btn {
+            background: var(--danger);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
+            margin-right: 15px;
+        }
+
+        /* --- PROFESSIONAL POP-UP BANNER --- */
+        #alertBanner {
+            position: fixed; top: -150px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 450px; background: #1e293b; color: white;
+            padding: 24px; border-radius: 20px; display: flex;
+            align-items: center; justify-content: space-between;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5); z-index: 9999;
+            transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        #alertBanner.active { top: 30px; }
+        .btn-confirm { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+
+        @media (max-width: 900px) {
+            .sidebar { width: 80px; padding: 20px 10px; align-items: center; }
+            .sidebar-brand span, .nav-item span { display: none; }
+            .main-content { margin-left: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <a href="index.html" class="sidebar-brand">
+            <img src="assets/logo.jpeg" alt="Logo">
+            <span>Echo Health</span>
+        </a>
+        <a href="index.html" class="nav-item active"><span><i class="fa-solid fa-house"></i> Dashboard</span></a>
+        <a href="schedule.html" class="nav-item"><span><i class="fa-solid fa-calendar"></i> Schedule</span></a>
+        <a href="medicine.html" class="nav-item"><span><i class="fa-solid fa-capsules"></i> Verification</span></a>
+        <a href="map.html" class="nav-item"><span><i class="fa-solid fa-map-location-dot"></i> Pharmacy</span></a>
+        <a href="prescription.html" class="nav-item"><span><i class="fa-solid fa-file-medical"></i> Prescriptions</span></a>
+        <div style="margin-top: auto;">
+            <a href="login.html" class="nav-item"><span><i class="fa-solid fa-user"></i> Switch Profile</span></a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="header-action">
+            <div>
+                <span class="status-badge">SMART MONITORING ACTIVE</span>
+                <p id="user-display" style="font-weight: 700; color: var(--text-muted);">Active: Loading...</p>
+            </div>
+            <div>
+                <button class="sos-btn" onclick="triggerSOS()">SOS EMERGENCY</button>
+                <button class="theme-btn" onclick="toggleTheme()">🌙 Toggle Theme</button>
+            </div>
+        </div>
+
+        <section class="hero-section">
+            <h1 id="welcome-msg">Intelligent Care <br>for Independent Living</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin-top: 15px;">Your AI safety engine is cross-referencing your prescriptions in real-time.</p>
+            <button class="btn-confirm" style="margin-top: 25px; padding: 15px 35px;" onclick="enableAlerts()">🔔 Start Demo Alerts</button>
+        </section>
+
+        <div class="feature-grid">
+            <a href="medicine.html" class="p-card">
+                <span class="card-icon"><i class="fa-solid fa-qrcode" style="color: var(--accent);"></i></span>
+                <span class="card-label">AI Scanner</span>
+                <h3>Safety Validation</h3>
+                <p style="color: var(--text-muted);">Instant verification of pill dosage accuracy.</p>
+            </a>
+            <a href="alert.html" class="p-card">
+                <span class="card-icon"><i class="fa-solid fa-microphone-lines" style="color: var(--accent);"></i></span>
+                <span class="card-label">Voice Engine</span>
+                <h3>Native Reminders</h3>
+                <p style="color: var(--text-muted);">Multilingual alerts in Hindi, Telugu, or English.</p>
+            </a>
+            <a href="prescription.html" class="p-card">
+                <span class="card-icon"><i class="fa-solid fa-camera" style="color: var(--accent);"></i></span>
+                <span class="card-label">Digital Records</span>
+                <h3>Smart Scan</h3>
+                <p style="color: var(--text-muted);">Convert physical prescriptions into smart digital logs.</p>
+            </a>
+            <a href="schedule.html" class="p-card">
+                <span class="card-icon"><i class="fa-solid fa-stethoscope" style="color: var(--accent);"></i></span>
+                <span class="card-label">Next Visit</span>
+                <h3>Doctor Appointments</h3>
+                <p style="color: var(--text-muted);">Stay on track with upcoming hospital consultations.</p>
+            </a>
+        </div>
+    </main>
+
+    <div id="alertBanner">
+        <div class="banner-content">
+            <b style="color:var(--accent); display: block; margin-bottom: 4px;">MEDICATION ALERT</b>
+            <span id="alertMsg">Time for your scheduled dose.</span>
+        </div>
+        <button class="btn-confirm" onclick="dismissAlert()">CONFIRM</button>
+    </div>
+
+    <script>
+        const activeUser = localStorage.getItem('activeUser') || "Father";
+        const isMother = activeUser.toLowerCase().includes("mother");
+        document.getElementById('user-display').innerText = `Current Patient: ${activeUser}`;
+
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            isDark ? body.removeAttribute('data-theme') : body.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        }
+        if (localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme', 'dark');
+
+        function triggerSOS() {
+            alert("EMERGENCY: Calling emergency contacts and notifying nearest clinic...");
+            const msg = new SpeechSynthesisUtterance("Emergency Alert Activated. Help is on the way.");
+            window.speechSynthesis.speak(msg);
+        }
+
+        function enableAlerts() {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") startDemoLoop();
+            });
+        }
+
+        function startDemoLoop() {
+            setInterval(() => {
+                if (!document.getElementById('alertBanner').classList.contains('active')) {
+                    triggerMedicalEvent();
+                }
+            }, 4000); // 4-second demo loop
+        }
+
+        function triggerMedicalEvent() {
+            new Notification("Echo Health", { body: `Alert for ${activeUser}: Time for medicine.` });
+
+            const banner = document.getElementById('alertBanner');
+            const msg = document.getElementById('alertMsg');
+            
+            if(isMother) {
+                msg.innerText = `${activeUser} గారు, మీ మందు తీసుకోండి.`; // Telugu
+            } else {
+                msg.innerText = `${activeUser}, आपकी दवा लेने का समय हो गया है।`; // Hindi
+            }
+            banner.classList.add('active');
+
+            const speech = new SpeechSynthesisUtterance(msg.innerText);
+            speech.lang = isMother ? "te-IN" : "hi-IN";
+            window.speechSynthesis.speak(speech);
+        }
+
+        function dismissAlert() {
+            document.getElementById('alertBanner').classList.remove('active');
+            window.speechSynthesis.cancel();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Health | Secure Entry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2c5282;
+            --secondary: #4fd1c5;
+            --bg-color: #0f172a; 
+            --text-main: #f1f5f9;
+            --card-bg: #1e293b;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* --- 1. NETFLIX SPLASH --- */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #0f172a; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .splash-logo {
+            width: 120px; height: 120px; border-radius: 50%;
+            animation: netflixIntro 1.8s ease-in-out forwards;
+            filter: drop-shadow(0 0 15px var(--secondary));
+        }
+        @keyframes netflixIntro {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- 2. FAKE LOGIN FORM --- */
+        #login-form-container {
+            width: 100%; max-width: 400px; padding: 40px;
+            background: rgba(30, 41, 59, 0.8); border-radius: 12px;
+            display: none; 
+            animation: fadeIn 1s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .login-input {
+            width: 100%; padding: 15px; margin-bottom: 20px;
+            background: #333; border: 1px solid #444; border-radius: 4px; color: white;
+            font-size: 1rem;
+        }
+        .btn-signin {
+            width: 100%; padding: 15px; background: var(--secondary);
+            color: white; font-weight: 800; border: none; border-radius: 4px;
+            cursor: pointer; transition: 0.3s; font-size: 1.1rem;
+        }
+
+        /* --- 3. PROFILE SELECTION --- */
+        #profile-selection {
+            display: none; text-align: center; width: 100%;
+            animation: fadeIn 1s ease;
+        }
+        .profile-grid { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 50px; }
+        .profile-card { text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; transition: 0.4s; cursor: pointer; }
+        .avatar-box {
+            width: 160px; height: 160px; border-radius: 8px;
+            background-size: cover; border: 4px solid transparent; margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .profile-card:hover { transform: scale(1.1); }
+        .profile-card:hover .avatar-box { border-color: white; }
+        .profile-card span { font-size: 1.2rem; font-weight: 600; color: #94a3b8; }
+
+        /* --- 4. MODAL FOR ADDING PROFILE --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 10000;
+        }
+        .modal-card {
+            background: var(--card-bg); padding: 40px; border-radius: 15px; width: 400px;
+            box-shadow: 0 0 30px rgba(79, 209, 197, 0.2);
+        }
+        .modal-card h3 { margin-bottom: 20px; font-family: 'Playfair Display'; font-size: 1.8rem; }
+        .modal-card input { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #444; background: #0f172a; color: white; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .hidden { display: none !important; }
+
+        /* Notification Status bar */
+        #notif-status {
+            position: fixed; bottom: 20px; font-size: 0.8rem; color: var(--secondary);
+            background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen">
+        <img src="assets/logo.jpeg" class="splash-logo" alt="Echo Logo">
+        <h1 style="color:var(--secondary); margin-top:20px; font-family:'Playfair Display'; letter-spacing: 3px;">ECHO HEALTH</h1>
+    </div>
+
+    <div id="login-form-container">
+        <h2 style="margin-bottom: 30px; font-size: 2rem; font-family: 'Playfair Display';">Sign In</h2>
+        <input type="email" class="login-input" placeholder="Email (any email works)" id="email">
+        <input type="password" class="login-input" placeholder="Password">
+        <button class="btn-signin" onclick="handleLogin()">Sign In</button>
+        <p style="margin-top: 20px; font-size: 0.9rem; color: #94a3b8; text-align: center;">New to Echo Health? <b style="color:white; cursor:pointer;">Sign up now.</b></p>
+    </div>
+
+    <div id="profile-selection">
+        <h1 style="font-family:'Playfair Display'; font-size: 3rem; margin-bottom: 10px;">Who's monitoring?</h1>
+        <p style="color: #94a3b8; margin-bottom: 20px;">Select a profile to start automated care.</p>
+        
+        <button id="start-btn" class="btn-signin" style="max-width: 250px; margin: 0 auto; display: block; background: #e53e3e;" onclick="initNotifications()">ENABLE DEMO ALERTS</button>
+
+        <div class="profile-grid" id="profile-grid">
+            <a href="index.html" class="profile-card" onclick="selectUser('Father')">
+                <div class="avatar-box" style="background-image: url('https://ui-avatars.com/api/?name=Father&background=2c5282&color=fff&size=200');"></div>
+                <span>Father</span>
+            </a>
+            
+            <a href="index.html" class="profile-card" onclick="selectUser('Mother')">
+                <div class="avatar-box" style="background-image: url('https://ui-avatars.com/api/?name=Mother&background=4fd1c5&color=fff&size=200');"></div>
+                <span>Mother</span>
+            </a>
+
+            <div class="profile-card" id="add-profile-btn" onclick="openModal()">
+                <div class="avatar-box" style="background:#333; font-size: 4rem; color:#666;">+</div>
+                <span>Add Patient</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h3>Add New Patient</h3>
+            <input type="text" id="new-patient-name" placeholder="Enter Patient Name">
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 20px;">* New profiles default to English voice alerts.</p>
+            <button class="btn-signin" onclick="createNewProfile()">Add & Select</button>
+            <p onclick="closeModal()" style="text-align:center; margin-top:15px; cursor:pointer; font-size:0.9rem; color:#94a3b8;">Cancel</p>
+        </div>
+    </div>
+
+    <div id="notif-status">Notifications: Idle</div>
+
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.classList.add('hidden');
+                    document.getElementById('login-form-container').style.display = 'block';
+                }, 800);
+            }, 2500); 
+        });
+
+        function handleLogin() {
+            const email = document.getElementById('email').value;
+            if(!email) { alert("Please enter an email to proceed."); return; }
+            document.querySelector('.btn-signin').innerText = "Connecting...";
+            setTimeout(() => {
+                document.getElementById('login-form-container').classList.add('hidden');
+                document.getElementById('profile-selection').style.display = 'block';
+            }, 1200);
+        }
+
+        function selectUser(name) {
+            localStorage.setItem('activeUser', name);
+        }
+
+        function openModal() {
+            document.getElementById('add-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('add-modal').style.display = 'none';
+        }
+
+        function createNewProfile() {
+            const name = document.getElementById('new-patient-name').value;
+            if(!name) return alert("Please enter a name");
+            localStorage.setItem('activeUser', name);
+            window.location.href = "index.html";
+        }
+
+        // --- 2 SECOND NOTIFICATION LOGIC ---
+
+        function initNotifications() {
+            if (!("Notification" in window)) {
+                alert("This browser does not support desktop notifications");
+                return;
+            }
+
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    document.getElementById('notif-status').innerText = "Notifications: Active (Every 2s)";
+                    document.getElementById('start-btn').style.display = "none";
+                    
+                    // Start the loop
+                    setInterval(() => {
+                        triggerMedicineNotif();
+                    }, 2000); // 2000ms = 2 seconds
+                } else {
+                    alert("Please allow notifications to see the demo!");
+                }
+            });
+        }
+
+        function triggerMedicineNotif() {
+            const user = localStorage.getItem('activeUser') || "Patient";
+            
+            // Native Browser Notification
+            const n = new Notification("Echo Health Alert", {
+                body: `Hey ${user}, time to take your medicine!`,
+                icon: "assets/logo.jpeg",
+                silent: false
+            });
+
+            // Optional: Voice alert as well
+            const msg = new SpeechSynthesisUtterance(`Time for medicine, ${user}`);
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
+</body>
+</html>

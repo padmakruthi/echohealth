@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Health | Elite Patient Portal</title> 
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #0d9488;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #020617;
+            --card-bg: #0f172a;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.2rem 8%; background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        [data-theme="dark"] .nav-bar { background: rgba(15, 23, 42, 0.8); border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo { height: 40px; width: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+        .brand-name { font-size: 1.4rem; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
+
+        .nav-links { display: flex; align-items: center; gap: 25px; }
+        .nav-links a { 
+            text-decoration: none; color: var(--text-main); 
+            font-weight: 600; font-size: 0.95rem; transition: var(--transition);
+        }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* Added Profile Style */
+        .user-profile-badge {
+            background: rgba(13, 148, 136, 0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-btn {
+            background: none; border: none; color: var(--text-main); 
+            cursor: pointer; font-size: 1.2rem; transition: var(--transition);
+        }
+
+        /* --- HERO --- */
+        .hero { 
+            padding: 100px 8% 60px; text-align: center;
+            background: radial-gradient(circle at top right, rgba(13, 148, 136, 0.1), transparent);
+        }
+        .hero h1 { 
+            font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); 
+            line-height: 1.1; margin-bottom: 20px; 
+        }
+        .hero h1 span { color: var(--accent); position: relative; }
+        .hero h1 span::after {
+            content: ''; position: absolute; bottom: 5px; left: 0; 
+            width: 100%; height: 8px; background: rgba(13, 148, 136, 0.2); z-index: -1;
+        }
+        .hero p { 
+            font-size: 1.2rem; color: var(--text-muted); 
+            max-width: 650px; margin: 0 auto 40px; font-weight: 500;
+        }
+
+        .btn {
+            padding: 18px 40px; border-radius: 50px; font-weight: 700;
+            cursor: pointer; transition: var(--transition); border: none; font-size: 1rem;
+        }
+        .btn-primary { 
+            background: var(--accent); color: white; 
+            box-shadow: 0 10px 20px rgba(13, 148, 136, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(13, 148, 136, 0.4); }
+
+        /* --- FEATURE GRID --- */
+        .section { padding: 60px 8% 100px; }
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; margin-top: 40px;
+        }
+
+        .card {
+            background: var(--card-bg); padding: 45px 35px; border-radius: 30px;
+            box-shadow: var(--shadow); text-decoration: none; color: inherit;
+            border: 1px solid rgba(0,0,0,0.03); transition: var(--transition);
+            display: flex; flex-direction: column; align-items: flex-start;
+        }
+        .card:hover { 
+            transform: translateY(-12px); border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .card-icon { 
+            width: 60px; height: 60px; background: rgba(13, 148, 136, 0.1);
+            color: var(--accent); border-radius: 18px; display: flex;
+            align-items: center; justify-content: center; font-size: 1.8rem;
+            margin-bottom: 25px;
+        }
+        .card h3 { font-size: 1.5rem; margin-bottom: 12px; font-weight: 700; }
+        .card p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
+
+        /* --- POPUP ALERT --- */
+        #alertBanner {
+            position: fixed; top: -150px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 450px; background: #1e293b; color: white;
+            padding: 24px; border-radius: 20px; display: flex;
+            align-items: center; justify-content: space-between;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5); z-index: 9999;
+            transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        #alertBanner.active { top: 30px; }
+        .btn-confirm { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+
+        footer { padding: 50px 8%; text-align: center; border-top: 1px solid rgba(0,0,0,0.05); color: var(--text-muted); font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<nav class="nav-bar">
+    <a href="index.html" class="logo-container">
+        <img src="assets/logo.jpeg" class="logo" alt="Echo Health">
+        <span class="brand-name">Echo Health</span>
+    </a>
+    <div class="nav-links">
+        <div class="user-profile-badge">
+            <i class="fa-solid fa-user-circle"></i> <span id="display-user-name">Patient</span>
+        </div>
+        <a href="schedule.html">Schedule</a>
+        <a href="prescription.html">Prescription</a>
+        <a href="medicine.html">Scan</a>
+        <a href="login.html" style="color: var(--accent); font-weight: 800;">Switch User</a>
+        <button class="theme-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+    </div>
+</nav>
+
+<header class="hero">
+    <h1>Your Voice of Care <br><span>in Every Dose.</span></h1>
+    <p>Empowering seniors with AI-driven medication safety and voice-guided reminders.</p>
+    <button class="btn btn-primary" onclick="enableDemo()">Start Live Demo <i class="fa-solid fa-bell" style="margin-left:8px"></i></button>
+</header>
+
+<section class="section" id="features">
+    <div class="grid">
+        <a href="medicine.html" class="card">
+            <div class="card-icon"><i class="fa-solid fa-shield-check"></i></div>
+            <h3>Safety Validation</h3>
+            <p>Advanced recognition to ensure medication matches doctor prescriptions.</p>
+        </a>
+        <a href="alert.html" class="card">
+            <div class="card-icon"><i class="fa-solid fa-microphone-lines"></i></div>
+            <h3>Voice Reminders</h3>
+            <p>Personalized audio alerts delivered in Hindi, Telugu, or English.</p>
+        </a>
+        <a href="map.html" class="card" style="border: 2px solid var(--accent);">
+            <div class="card-icon" style="background: var(--accent); color: white;"><i class="fa-solid fa-map-location-dot"></i></div>
+            <h3>Nearby Pharmacy</h3>
+            <p>Locate medical stores near Kukatpally and get instant directions.</p>
+        </a>
+    </div>
+</section>
+
+<div id="alertBanner">
+    <div>
+        <b style="color:var(--accent); display: block; margin-bottom: 4px;">MEDICATION ALERT</b>
+        <span id="alertMsg">Time for your scheduled dose.</span>
+    </div>
+    <button class="btn-confirm" onclick="dismissAlert()">CONFIRM</button>
+</div>
+
+<footer>
+    <p>© 2026 Echo Health | Patient Safety Engine Active</p>
+</footer>
+
+<script>
+    // --- LOAD USER PROFILE ---
+    const activeUser = localStorage.getItem('activeUser') || "Guest";
+    document.getElementById('display-user-name').innerText = activeUser;
+
+    // --- DARK MODE ---
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.querySelector('.theme-btn i');
+        if (body.getAttribute('data-theme') === 'dark') {
+            body.removeAttribute('data-theme');
+            icon.classList.replace('fa-sun', 'fa-moon');
+            localStorage.setItem('theme', 'light');
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            icon.classList.replace('fa-moon', 'fa-sun');
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        document.querySelector('.theme-btn i').classList.replace('fa-moon', 'fa-sun');
+    }
+
+    // --- AUTOMATED ALERTS (4s DEMO LOOP) ---
+    function enableDemo() {
+        Notification.requestPermission();
+        alert("Alerts activated! You will receive a medicine reminder every 4 seconds.");
+        setInterval(() => {
+            if (!document.getElementById('alertBanner').classList.contains('active')) {
+                triggerAlert();
+            }
+        }, 4000); // 4-second cycle
+    }
+
+    function triggerAlert() {
+        const user = localStorage.getItem('activeUser') || "Patient";
+        const banner = document.getElementById('alertBanner');
+        const msg = document.getElementById('alertMsg');
+        
+        // Native Desktop Notification
+        new Notification("Echo Health", { body: `Reminder for ${user}: Please take your dose.` });
+
+        // Multilingual Logic
+        const isMother = user.toLowerCase().includes("mother");
+        const alertText = isMother ? `${user} గారు, మీ మందు తీసుకోండి.` : `${user}, अपनी दवा लें।`;
+        
+        msg.innerText = alertText;
+        banner.classList.add('active');
+
+        // Voice Engine
+        const speech = new SpeechSynthesisUtterance(alertText);
+        speech.lang = isMother ? "te-IN" : "hi-IN";
+        window.speechSynthesis.speak(speech);
+    }
+
+    function dismissAlert() {
+        document.getElementById('alertBanner').classList.remove('active');
+        window.speechSynthesis.cancel();
+    }
+</script>
+
+</body>
+</html>
