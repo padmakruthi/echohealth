@@ -1,233 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Echo Health | Secure Entry</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Echo Health | Secure Entry</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --primary: #2c5282;
-            --secondary: #4fd1c5;
-            --bg-color: #0f172a;
-            --text-main: #f1f5f9;
-            --card-bg: #1e293b;
-        }
+<style>
+:root {
+  --secondary:#4fd1c5;
+  --bg:#0f172a;
+  --card:#1e293b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Inter,sans-serif;
+  background:var(--bg);
+  color:#f1f5f9;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.hidden{display:none}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+#splash{
+  position:fixed;inset:0;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  z-index:10;
+}
+.splash-logo{
+  width:120px;height:120px;border-radius:50%;
+  animation:pop 1.8s forwards;
+  filter:drop-shadow(0 0 15px var(--secondary));
+}
+@keyframes pop{
+  0%{transform:scale(.5);opacity:0}
+  100%{transform:scale(1);opacity:1}
+}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+.card{
+  width:380px;
+  background:rgba(30,41,59,.9);
+  padding:40px;
+  border-radius:12px;
+}
+input,button{
+  width:100%;
+  padding:14px;
+  margin-bottom:15px;
+  border-radius:6px;
+  border:none;
+}
+input{background:#333;color:white}
+button{
+  background:var(--secondary);
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+}
 
-        /* Splash Screen */
-        #splash-screen {
-            position: fixed;
-            inset: 0;
-            background-color: #0f172a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease;
-        }
+#profiles{text-align:center}
+.grid{
+  display:flex;
+  gap:40px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:30px;
+}
+.profile{
+  cursor:pointer;
+  transition:.3s;
+}
+.profile:hover{transform:scale(1.1)}
+.avatar{
+  width:140px;height:140px;
+  border-radius:8px;
+  margin-bottom:10px;
+  background-size:cover;
+  box-shadow:0 10px 20px rgba(0,0,0,.4);
+}
 
-        .splash-logo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            animation: netflixIntro 1.8s ease-in-out forwards;
-            filter: drop-shadow(0 0 15px var(--secondary));
-        }
+#modal{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.modal-card{
+  background:var(--card);
+  padding:30px;
+  width:360px;
+  border-radius:12px;
+}
 
-        @keyframes netflixIntro {
-            0% { transform: scale(0.5); opacity: 0; }
-            70% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Login */
-        #login-form-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 40px;
-            background: rgba(30, 41, 59, 0.85);
-            border-radius: 12px;
-            display: none;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            background: #333;
-            border: 1px solid #444;
-            border-radius: 4px;
-            color: white;
-            font-size: 1rem;
-        }
-
-        .btn-signin {
-            width: 100%;
-            padding: 15px;
-            background: var(--secondary);
-            color: white;
-            font-weight: 800;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1.1rem;
-        }
-
-        /* Profile Selection */
-        #profile-selection {
-            display: none;
-            text-align: center;
-            width: 100%;
-        }
-
-        .profile-grid {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin-top: 50px;
-        }
-
-        .profile-card {
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: 0.4s;
-            cursor: pointer;
-        }
-
-        .avatar-box {
-            width: 160px;
-            height: 160px;
-            border-radius: 8px;
-            background-size: cover;
-            margin-bottom: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .profile-card:hover { transform: scale(1.1); }
-
-        .hidden { display: none !important; }
-
-        #notif-status {
-            position: fixed;
-            bottom: 20px;
-            font-size: 0.8rem;
-            color: var(--secondary);
-            background: rgba(0,0,0,0.5);
-            padding: 6px 16px;
-            border-radius: 20px;
-        }
-    </style>
+#notif{
+  position:fixed;
+  bottom:20px;
+  font-size:.8rem;
+  color:var(--secondary);
+}
+</style>
 </head>
+
 <body>
 
-    <!-- SPLASH -->
-    <div id="splash-screen">
-        <img src="./logo.jpeg" class="splash-logo" alt="Echo Logo">
-        <h1 style="color:var(--secondary); margin-top:20px; font-family:'Playfair Display'; letter-spacing:3px;">
-            ECHO HEALTH
-        </h1>
+<!-- SPLASH -->
+<div id="splash">
+  <img src="./logo.jpeg" class="splash-logo">
+  <h1 style="margin-top:20px;letter-spacing:3px;font-family:Playfair Display;color:var(--secondary)">
+    ECHO HEALTH
+  </h1>
+</div>
+
+<!-- LOGIN -->
+<div id="login" class="card hidden">
+  <h2 style="margin-bottom:25px;font-family:Playfair Display">Sign In</h2>
+  <input id="email" type="email" placeholder="Email">
+  <input type="password" placeholder="Password">
+  <button onclick="login()">Sign In</button>
+</div>
+
+<!-- PROFILES -->
+<div id="profiles" class="hidden">
+  <h1 style="font-family:Playfair Display;font-size:2.5rem">Who's monitoring?</h1>
+
+  <button style="max-width:260px;margin:20px auto;background:#e53e3e"
+          onclick="startAlerts()">ENABLE DEMO ALERTS</button>
+
+  <div class="grid" id="profileGrid">
+    <div class="profile" onclick="selectUser('Father')">
+      <div class="avatar" style="background-image:url('https://ui-avatars.com/api/?name=Father&background=2c5282&color=fff&size=200')"></div>
+      <span>Father</span>
     </div>
 
-    <!-- LOGIN -->
-    <div id="login-form-container">
-        <h2 style="margin-bottom:30px; font-family:'Playfair Display';">Sign In</h2>
-        <input type="email" class="login-input" placeholder="Email" id="email">
-        <input type="password" class="login-input" placeholder="Password">
-        <button class="btn-signin" onclick="handleLogin()">Sign In</button>
+    <div class="profile" onclick="selectUser('Mother')">
+      <div class="avatar" style="background-image:url('https://ui-avatars.com/api/?name=Mother&background=4fd1c5&color=fff&size=200')"></div>
+      <span>Mother</span>
     </div>
 
-    <!-- PROFILES -->
-    <div id="profile-selection">
-        <h1 style="font-family:'Playfair Display'; font-size:3rem;">Who's monitoring?</h1>
-
-        <button class="btn-signin" style="max-width:260px; margin:20px auto; background:#e53e3e;"
-            onclick="initNotifications()">ENABLE DEMO ALERTS</button>
-
-        <div class="profile-grid">
-            <div class="profile-card" onclick="selectUser('Father')">
-                <div class="avatar-box"
-                     style="background-image:url('https://ui-avatars.com/api/?name=Father&background=2c5282&color=fff&size=200');">
-                </div>
-                <span>Father</span>
-            </div>
-
-            <div class="profile-card" onclick="selectUser('Mother')">
-                <div class="avatar-box"
-                     style="background-image:url('https://ui-avatars.com/api/?name=Mother&background=4fd1c5&color=fff&size=200');">
-                </div>
-                <span>Mother</span>
-            </div>
-        </div>
+    <div class="profile" onclick="openModal()">
+      <div class="avatar" style="background:#333;font-size:4rem;display:flex;align-items:center;justify-content:center">+</div>
+      <span>Add Patient</span>
     </div>
+  </div>
+</div>
 
-    <div id="notif-status">Notifications: Idle</div>
+<!-- ADD MODAL -->
+<div id="modal">
+  <div class="modal-card">
+    <h3 style="margin-bottom:15px">Add New Patient</h3>
+    <input id="newName" placeholder="Patient Name">
+    <button onclick="addProfile()">Add & Select</button>
+    <p style="text-align:center;cursor:pointer;color:#94a3b8" onclick="closeModal()">Cancel</p>
+  </div>
+</div>
 
-    <script>
-        window.onload = () => {
-            setTimeout(() => {
-                document.getElementById("splash-screen").style.opacity = "0";
-                setTimeout(() => {
-                    document.getElementById("splash-screen").style.display = "none";
-                    document.getElementById("login-form-container").style.display = "block";
-                }, 800);
-            }, 2500);
-        };
+<div id="notif">Notifications: Idle</div>
 
-        function handleLogin() {
-            if (!email.value) return alert("Enter email");
-            document.getElementById("login-form-container").classList.add("hidden");
-            document.getElementById("profile-selection").style.display = "block";
-        }
+<script>
+setTimeout(()=>{
+  splash.style.display="none";
+  login.classList.remove("hidden");
+},2500);
 
-        function selectUser(name) {
-            localStorage.setItem("activeUser", name);
-        }
+function login(){
+  if(!email.value) return alert("Enter email");
+  login.classList.add("hidden");
+  profiles.classList.remove("hidden");
+}
 
-        function initNotifications() {
-            Notification.requestPermission().then(p => {
-                if (p === "granted") {
-                    document.getElementById("notif-status").innerText = "Notifications: Active";
-                    setInterval(triggerNotif, 2000);
-                }
-            });
-        }
+function selectUser(name){
+  localStorage.setItem("activeUser",name);
+  alert(name+" selected ✅");
+}
 
-        function triggerNotif() {
-            const user = localStorage.getItem("activeUser") || "Patient";
-            new Notification("Echo Health Alert", {
-                body: `Hey ${user}, time to take your medicine!`,
-                icon: "./logo.jpeg"
-            });
+function openModal(){ modal.style.display="flex"; }
+function closeModal(){ modal.style.display="none"; }
 
-            speechSynthesis.speak(
-                new SpeechSynthesisUtterance(`Time for medicine ${user}`)
-            );
-        }
-    </script>
+function addProfile(){
+  const name=newName.value;
+  if(!name) return alert("Enter name");
+  localStorage.setItem("activeUser",name);
+
+  const div=document.createElement("div");
+  div.className="profile";
+  div.onclick=()=>selectUser(name);
+  div.innerHTML=`
+    <div class="avatar" style="background-image:url('https://ui-avatars.com/api/?name=${name}&background=0f766e&color=fff&size=200')"></div>
+    <span>${name}</span>`;
+  profileGrid.insertBefore(div,profileGrid.lastElementChild);
+  closeModal();
+}
+
+function startAlerts(){
+  Notification.requestPermission().then(p=>{
+    if(p==="granted"){
+      notif.innerText="Notifications: Active";
+      setInterval(()=>{
+        const user=localStorage.getItem("activeUser")||"Patient";
+        new Notification("Echo Health Alert",{
+          body:`Hey ${user}, time to take medicine!`,
+          icon:"./logo.jpeg"
+        });
+        speechSynthesis.speak(new SpeechSynthesisUtterance(`Time for medicine ${user}`));
+      },2000);
+    }
+  });
+}
+</script>
 
 </body>
 </html>
